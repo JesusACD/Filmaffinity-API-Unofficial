@@ -5,7 +5,7 @@ A TypeScript library to scrape movie information from Filmaffinity.
 ## Installation
 
 ```bash
-npm install filmaffinity-scraper
+npm install filmaffinity-api-unofficial
 ```
 
 ## Usage
