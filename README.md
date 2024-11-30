@@ -50,6 +50,39 @@ async function example(): Promise<void> {
 }
 ```
 
+## Example Response
+
+Here's an example of the movie information returned by the scraper:
+
+```javascript
+{
+  title: 'La hora fatal (Mr. Wong en el cuartel)',
+  year: '1940',
+  duration: '68 min.',
+  country: 'Estados Unidos',
+  director: 'William Nigh',
+  genres: [ 'Intriga', 'Thriller', 'Cine negro' ],
+  cast: [
+    'Boris Karloff',
+    'Marjorie Reynolds',
+    'Grant Withers',
+    'Charles Trowbridge',
+    'Frank Puglia',
+    'Craig Reynolds',
+    'Lita Chevret',
+    'Harry Strang',
+    'Hooper Atchley',
+    'Jason Robards Sr.',
+    'Richard Loo'
+  ],
+  synopsis: 'James Lee Wong investiga el asesinato de un oficial de policía durante el robo a una joyería. Bobbie Logan es una temeraria reportera que intentará seguir los pasos del inspector oriental Wong para conseguir la exclusiva. (FILMAFFINITY)',
+  imageUrl: 'https://pics.filmaffinity.com/the_fatal_hour-580434775-mmed.jpg',
+  largeImageUrl: 'https://pics.filmaffinity.com/the_fatal_hour-580434775-large.jpg',
+  countryImageUrl: 'https://www.filmaffinity.com/imgs/countries2/US.png',
+  trailersUrl: ''
+}
+```
+
 ## Types
 
 ### MovieInfo
@@ -80,6 +113,17 @@ interface TrailerInfo {
 }
 ```
 
+## Features
+
+- Scrapes detailed movie information from Filmaffinity
+- Supports both movie details and trailer information
+- Provides TypeScript type definitions
+- Returns high-quality movie poster images (both medium and large sizes)
+- Includes comprehensive movie metadata (title, year, duration, country, director, etc.)
+- Extracts full cast list and genres
+- Returns movie synopsis
+- Handles country flags/images
+
 ## Development
 
 To build the project:
@@ -89,6 +133,13 @@ npm run build
 ```
 
 This will generate the JavaScript files and type definitions in the `dist` directory.
+
+## Error Handling
+
+The scraper methods return `null` when:
+- The movie URL is invalid
+- The movie page is not accessible
+- The required information cannot be extracted
 
 ## License
 
