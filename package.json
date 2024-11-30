@@ -1,0 +1,40 @@
+{
+  "name": "filmaffinity-api-unofficial",
+  "version": "1.0.0",
+  "description": "A TypeScript library to scrape movie information from Filmaffinity",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "filmaffinity",
+    "movies",
+    "scraper",
+    "api",
+    "film",
+    "cinema",
+    "typescript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "bow-react-spreadsheet-import": "^4.7.9",
+    "cheerio": "^1.0.0-rc.12"
+  },
+  "devDependencies": {
+    "@types/node": "^20.4.5",
+    "typescript": "^5.1.6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JesusACD/filmaffinity-API-unofficial.git"
+  },
+  "bugs": {
+    "url": "https://github.com/JesusACD/filmaffinity-API-unofficial/issues"
+  },
+  "homepage": "https://github.com/JesusACD/filmaffinity-API-unofficial#readme"
+}
