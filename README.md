@@ -15,28 +15,32 @@ npm install filmaffinity-api-unofficial
 const { FilmaffinityScraper } = require('filmaffinity-scraper');
 
 async function example() {
-  const scraper = new FilmaffinityScraper();
-  
-  // Get movie information
-  const movieUrl = 'https://www.filmaffinity.com/es/film123456.html';
-  const movieInfo = await scraper.getMovie(movieUrl);
-  console.log(movieInfo);
-  
-  // Get movie trailers
-  if (movieInfo?.trailersUrl) {
-    const trailers = await scraper.getTrailers(movieInfo.trailersUrl);
-    console.log(trailers);
-  }
+    const scraper = new FilmaffinityScraper();
+    try {
+        // Example: Search for a movie
+        const searchResults = await scraper.searchMovies("thor 2");
+        console.log(searchResults);
 
-  // Search movies by title
-  const searchResults = await scraper.searchMoviesByTitle('La hora fatal');
-  console.log(searchResults);
+        // If you find a movie, you can get its details
+        if (searchResults.length > 0 && searchResults[0].url) {
+            const movieDetails = await scraper.getMovie(searchResults[0].url);
+            console.log(movieDetails);
+
+            // Get movie trailers
+            if (movieDetails?.trailersUrl) {
+              const trailers = await scraper.getTrailers(movieDetails.trailersUrl);
+              console.log(trailers);
+            }
+        }
+    } catch (error) {
+        console.error("Error:", error);
+    }
 }
 ```
 
 ### TypeScript
 ```typescript
-import { FilmaffinityScraper, MovieInfo, TrailerInfo, MovieSearchResult } from 'filmaffinity-scraper';
+const { FilmaffinityScraper, MovieInfo, TrailerInfo, MovieSearchResult } = require('filmaffinity-scraper');
 
 async function example(): Promise<void> {
   const scraper = new FilmaffinityScraper();
@@ -53,7 +57,7 @@ async function example(): Promise<void> {
   }
 
   // Search movies by title
-  const searchResults: MovieSearchResult[] = await scraper.searchMoviesByTitle('La hora fatal');
+  const searchResults: MovieSearchResult[] = await scraper.searchMovies('La hora fatal');
   console.log(searchResults);
 }
 ```
@@ -121,6 +125,33 @@ async function example(): Promise<void> {
 ]
 ```
 
+## Language Support
+
+The scraper supports both Spanish (es) and English (en) languages. You can specify the language in three ways:
+
+### 1. During initialization
+```typescript
+// Default to Spanish
+const scraper = new FilmaffinityScraper();
+
+// Or specify English explicitly
+const englishScraper = new FilmaffinityScraper('en');
+```
+
+### 2. Change language after initialization
+```typescript
+const scraper = new FilmaffinityScraper();
+scraper.setLanguage('en'); // Change to English
+scraper.setLanguage('es'); // Change back to Spanish
+```
+
+### 3. Check current language
+```typescript
+const currentLanguage = scraper.getLanguage(); // Returns 'es' or 'en'
+```
+
+The language setting affects all scraper operations, including movie searches and information retrieval. The scraper will automatically use the appropriate Filmaffinity domain (filmaffinity.com/es or filmaffinity.com/en) based on the selected language.
+
 ## Types
 
 ### MovieInfo
@@ -187,7 +218,7 @@ This will generate the JavaScript files and type definitions in the `dist` direc
 
 The scraper methods return:
 - `null` when movie information cannot be retrieved (getMovie)
-- Empty array `[]` when no search results are found (searchMoviesByTitle)
+- Empty array `[]` when no search results are found (searchMovies)
 - `null` when:
   - The movie URL is invalid
   - The movie page is not accessible

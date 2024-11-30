@@ -1,8 +1,33 @@
 import { CheerioAPI, load } from "cheerio";
 import axios, { AxiosResponse } from "axios";
-import { MovieInfo, TrailerInfo, MovieSearchResult } from "./types";
+import { MovieInfo, TrailerInfo, MovieSearchResult, Language } from "./types";
 
 export class FilmaffinityScraper {
+  private language: Language;
+  private baseUrl: string;
+
+  constructor(language: Language = 'es') {
+    this.language = language;
+    this.baseUrl = `https://www.filmaffinity.com/${language}`;
+  }
+
+  /**
+   * Set the language for the scraper
+   * @param language - The language to use ('es' for Spanish, 'en' for English)
+   */
+  setLanguage(language: Language): void {
+    this.language = language;
+    this.baseUrl = `https://www.filmaffinity.com/${language}`;
+  }
+
+  /**
+   * Get the current language setting
+   * @returns The current language
+   */
+  getLanguage(): Language {
+    return this.language;
+  }
+
   /**
    * Get detailed information about a movie from its Filmaffinity URL
    * @param url - The Filmaffinity movie URL
@@ -102,18 +127,15 @@ export class FilmaffinityScraper {
 
   /**
    * Search for movies by title
-   * @param searchQuery - The movie title to search for
-   * @returns Promise with an array of movie search results
+   * @param query - The search query
+   * @returns Promise with an array of search results
    */
-  async searchMoviesByTitle(searchQuery: string): Promise<MovieSearchResult[]> {
+  async searchMovies(query: string): Promise<MovieSearchResult[]> {
     try {
-      const searchUrl = `https://www.filmaffinity.com/mx/search.php?stype=title&stext=${encodeURIComponent(
-        searchQuery
-      )}`;
-
-      const response = await axios.get(searchUrl);
-      const html = response.data;
-      const $ = load(html);
+      const url = `${this.baseUrl}/search.php?stext=${encodeURIComponent(query)}`;
+      const response: AxiosResponse = await axios.get(url);
+      const html: string = response.data;
+      const $: CheerioAPI = load(html);
 
       const movies: MovieSearchResult[] = [];
 

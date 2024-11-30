@@ -13,6 +13,8 @@ export interface MovieInfo {
   trailersUrl: string;
 }
 
+export type Language = 'es' | 'en';
+
 export interface TrailerInfo {
   id: string | undefined;
   number: string | undefined;
