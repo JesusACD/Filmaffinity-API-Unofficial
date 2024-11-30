@@ -27,12 +27,16 @@ async function example() {
     const trailers = await scraper.getTrailers(movieInfo.trailersUrl);
     console.log(trailers);
   }
+
+  // Search movies by title
+  const searchResults = await scraper.searchMoviesByTitle('La hora fatal');
+  console.log(searchResults);
 }
 ```
 
 ### TypeScript
 ```typescript
-import { FilmaffinityScraper, MovieInfo, TrailerInfo } from 'filmaffinity-scraper';
+import { FilmaffinityScraper, MovieInfo, TrailerInfo, MovieSearchResult } from 'filmaffinity-scraper';
 
 async function example(): Promise<void> {
   const scraper = new FilmaffinityScraper();
@@ -47,13 +51,16 @@ async function example(): Promise<void> {
     const trailers: TrailerInfo[] | null = await scraper.getTrailers(movieInfo.trailersUrl);
     console.log(trailers);
   }
+
+  // Search movies by title
+  const searchResults: MovieSearchResult[] = await scraper.searchMoviesByTitle('La hora fatal');
+  console.log(searchResults);
 }
 ```
 
-## Example Response
+## Example Responses
 
-Here's an example of the movie information returned by the scraper:
-
+### Movie Information
 ```javascript
 {
   title: 'La hora fatal (Mr. Wong en el cuartel)',
@@ -81,6 +88,37 @@ Here's an example of the movie information returned by the scraper:
   countryImageUrl: 'https://www.filmaffinity.com/imgs/countries2/US.png',
   trailersUrl: ''
 }
+```
+
+### Trailers Information
+```javascript
+[
+  {
+    id: "vi2364450073",
+    number: "1",
+    title: "Tráiler (2:25)",
+    iframeSrc: "https://www.filmaffinity.com/es/evideos.php?movie_id=123456"
+  },
+  {
+    id: "vi2364450074",
+    number: "2",
+    title: "Tráiler 2 (1:53)",
+    iframeSrc: "https://www.filmaffinity.com/es/evideos.php?movie_id=123456"
+  }
+]
+```
+
+### Search Results
+```javascript
+[
+  {
+    title: "La hora fatal (Mr. Wong en el cuartel)",
+    imageUrl: "https://pics.filmaffinity.com/the_fatal_hour-580434775-mmed.jpg",
+    url: "https://www.filmaffinity.com/mx/film123456.html",
+    countryImageUrl: "https://www.filmaffinity.com/imgs/countries2/US.png"
+  },
+  // ... more results
+]
 ```
 
 ## Types
@@ -113,9 +151,20 @@ interface TrailerInfo {
 }
 ```
 
+### MovieSearchResult
+```typescript
+interface MovieSearchResult {
+  title: string;
+  imageUrl: string | undefined;
+  url: string;
+  countryImageUrl: string | null;
+}
+```
+
 ## Features
 
 - Scrapes detailed movie information from Filmaffinity
+- Search movies by title
 - Supports both movie details and trailer information
 - Provides TypeScript type definitions
 - Returns high-quality movie poster images (both medium and large sizes)
@@ -136,10 +185,13 @@ This will generate the JavaScript files and type definitions in the `dist` direc
 
 ## Error Handling
 
-The scraper methods return `null` when:
-- The movie URL is invalid
-- The movie page is not accessible
-- The required information cannot be extracted
+The scraper methods return:
+- `null` when movie information cannot be retrieved (getMovie)
+- Empty array `[]` when no search results are found (searchMoviesByTitle)
+- `null` when:
+  - The movie URL is invalid
+  - The movie page is not accessible
+  - The required information cannot be extracted
 
 ## License
 

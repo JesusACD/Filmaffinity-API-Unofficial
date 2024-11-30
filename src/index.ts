@@ -1,6 +1,6 @@
 import { CheerioAPI, load } from "cheerio";
 import axios, { AxiosResponse } from "axios";
-import { MovieInfo, TrailerInfo } from "./types";
+import { MovieInfo, TrailerInfo, MovieSearchResult } from "./types";
 
 export class FilmaffinityScraper {
   /**
@@ -97,6 +97,50 @@ export class FilmaffinityScraper {
     } catch (error) {
       console.error("Error fetching trailers:", error);
       return null;
+    }
+  }
+
+  /**
+   * Search for movies by title
+   * @param searchQuery - The movie title to search for
+   * @returns Promise with an array of movie search results
+   */
+  async searchMoviesByTitle(searchQuery: string): Promise<MovieSearchResult[]> {
+    try {
+      const searchUrl = `https://www.filmaffinity.com/mx/search.php?stype=title&stext=${encodeURIComponent(
+        searchQuery
+      )}`;
+
+      const response = await axios.get(searchUrl);
+      const html = response.data;
+      const $ = load(html);
+
+      const movies: MovieSearchResult[] = [];
+
+      $(".se-it").each((_, element) => {
+        const movieTitle = $(element).find(".mc-title a").text().trim();
+        const movieImageUrl = $(element)
+          .find(".mc-poster img")
+          .attr("data-src");
+        const movieUrl = $(element).find(".mc-title a").attr("href");
+        const countryFlagImageUrl = $(element).find(".nflag").attr("src");
+
+        const countryImageUrl = countryFlagImageUrl
+          ? `https://www.filmaffinity.com${countryFlagImageUrl}`
+          : null;
+
+        movies.push({
+          title: movieTitle,
+          imageUrl: movieImageUrl,
+          url: movieUrl,
+          countryImageUrl,
+        });
+      });
+
+      return movies;
+    } catch (error) {
+      console.error("Error searching movies:", error);
+      return [];
     }
   }
 }
