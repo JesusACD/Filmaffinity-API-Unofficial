@@ -1,4 +1,4 @@
-import { MovieInfo, TrailerInfo } from "./types";
+import { MovieInfo, TrailerInfo, MovieSearchResult } from "./types";
 export declare class FilmaffinityScraper {
     /**
      * Get detailed information about a movie from its Filmaffinity URL
@@ -12,5 +12,11 @@ export declare class FilmaffinityScraper {
      * @returns Promise with array of trailer objects or null if an error occurs
      */
     getTrailers(trailersUrl: string): Promise<TrailerInfo[] | null>;
+    /**
+     * Search for movies by title
+     * @param searchQuery - The movie title to search for
+     * @returns Promise with an array of movie search results
+     */
+    searchMoviesByTitle(searchQuery: string): Promise<MovieSearchResult[]>;
 }
 export * from './types';

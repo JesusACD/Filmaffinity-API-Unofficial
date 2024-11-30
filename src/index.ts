@@ -122,7 +122,7 @@ export class FilmaffinityScraper {
         const movieImageUrl = $(element)
           .find(".mc-poster img")
           .attr("data-src");
-        const movieUrl = $(element).find(".mc-title a").attr("href");
+        const movieUrl = $(element).find(".mc-title a").attr("href") || '';
         const countryFlagImageUrl = $(element).find(".nflag").attr("src");
 
         const countryImageUrl = countryFlagImageUrl

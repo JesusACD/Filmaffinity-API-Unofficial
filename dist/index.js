@@ -109,6 +109,42 @@ class FilmaffinityScraper {
             return null;
         }
     }
+    /**
+     * Search for movies by title
+     * @param searchQuery - The movie title to search for
+     * @returns Promise with an array of movie search results
+     */
+    async searchMoviesByTitle(searchQuery) {
+        try {
+            const searchUrl = `https://www.filmaffinity.com/mx/search.php?stype=title&stext=${encodeURIComponent(searchQuery)}`;
+            const response = await axios_1.default.get(searchUrl);
+            const html = response.data;
+            const $ = (0, cheerio_1.load)(html);
+            const movies = [];
+            $(".se-it").each((_, element) => {
+                const movieTitle = $(element).find(".mc-title a").text().trim();
+                const movieImageUrl = $(element)
+                    .find(".mc-poster img")
+                    .attr("data-src");
+                const movieUrl = $(element).find(".mc-title a").attr("href") || '';
+                const countryFlagImageUrl = $(element).find(".nflag").attr("src");
+                const countryImageUrl = countryFlagImageUrl
+                    ? `https://www.filmaffinity.com${countryFlagImageUrl}`
+                    : null;
+                movies.push({
+                    title: movieTitle,
+                    imageUrl: movieImageUrl,
+                    url: movieUrl,
+                    countryImageUrl,
+                });
+            });
+            return movies;
+        }
+        catch (error) {
+            console.error("Error searching movies:", error);
+            return [];
+        }
+    }
 }
 exports.FilmaffinityScraper = FilmaffinityScraper;
 __exportStar(require("./types"), exports);

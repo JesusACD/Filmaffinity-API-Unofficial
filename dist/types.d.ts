@@ -18,3 +18,9 @@ export interface TrailerInfo {
     title: string;
     iframeSrc: string | undefined;
 }
+export interface MovieSearchResult {
+    title: string;
+    imageUrl: string | undefined;
+    url: string;
+    countryImageUrl: string | null;
+}

@@ -1,6 +1,6 @@
 {
   "name": "filmaffinity-api-unofficial",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A TypeScript library to scrape movie information from Filmaffinity",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
